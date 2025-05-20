@@ -1,0 +1,35 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{{ post.title }}</title>
+    <link rel="stylesheet" href="{% static 'posts/style.css' %}" />
+  </head>
+  <body>
+    <h1>{{ post.title }}</h1>
+    <p>{{ post.content }}</p>
+    <p>
+      <a href="{% url 'author' post.author.id %}"
+        >Author: {{ post.author.name }}</a
+      >
+    </p>
+    <h3>Comments</h3>
+    {% for comment in post.comments.all %}
+    <p>{{ comment.content }}</p>
+    <p>By: {{ comment.author.name }}</p>
+    {% empty %}
+    <p>No comments yet.</p>
+    {% endfor %}
+    <img
+      src="{% static post.image %}"
+      alt="{{ post.title }}"
+      style="max-width: 300px"
+    />
+
+    <div>
+      <a href="{% url 'index' %}" class="back-link">Back to all posts</a>
+    </div>
+  </body>
+</html>
