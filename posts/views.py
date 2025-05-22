@@ -44,6 +44,16 @@ def login(request):
         return Response({'error': 'Invalid credentials'}, status=status.HTTP_401_UNAUTHORIZED)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def logout(request):
+    # Delete the user's token to logout
+    if request.user.is_authenticated:
+        Token.objects.filter(user=request.user).delete()
+        return Response({"detail": "Successfully logged out."}, status=status.HTTP_200_OK)
+    return Response({"detail": "You are not logged in."}, status=status.HTTP_400_BAD_REQUEST)
+
+
 @api_view(['GET', 'POST'])
 @permission_classes([AllowAny])
 def post_list_create(request):
